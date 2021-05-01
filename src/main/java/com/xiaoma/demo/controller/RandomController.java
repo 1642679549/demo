@@ -50,4 +50,9 @@ public class RandomController {
                 :(restrict == 6 ? "我请你吃饭"
                 :"在一起"))))));
     }
+
+    @GetMapping("test")
+    public String test(){
+        return "8888";
+    }
 }
