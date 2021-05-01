@@ -1,0 +1,48 @@
+matrix:
+  include:
+    - REPOT_BASE: hub.xiaoma.com/base
+      REPO_DEV: hub.xiaoma.com/dev
+
+pipeline:
+  code-analysis:
+    image: 1.117.64.228:9999/drone-sonar-java
+    sources: .
+    secrets: [sonar_host, sonar_token]
+    when:
+      event: [ push ]
+      branch:
+        -master
+
+  build:
+    image: 1.117.64.228:9999/maven:rep
+    commands:
+      -mvn clear install -Dmaven.test.skip=true
+    when:
+      event: [ push, tag]
+
+  publish_dev:
+    image: plugins/docker
+    registry: 1.117.64.228:9999
+    secrets: [docker_username, docker_password]
+    repo: ${REPO_DEV}
+    tags: ${DRONE_COMMIT}
+    dockerfile: Dockerfile
+    insecure: true
+    when:
+      even: [push]
+      branch:
+        - feature-*
+
+  deploy_dev:
+    image: appleboy/drone-ssh
+    port: 22
+    username: root
+    host: 1.117.64.228
+    password: zhaokaixiang1!
+    script:
+      - docker rm -f draw
+      - docker run -d -p 999:999 --name=draw --env SERVICE_NAME=draw-dev --env PROFILE=dev --env JAR_NAME=draw-0.0.1-SNAPSHOT ${REPO_DEV}:${DRONE_COMMIT}
+    when:
+      even: [ push ]
+      branch：
+        - feature-*
