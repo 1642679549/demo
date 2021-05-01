@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>转盘抽奖</title>
+    <link rel="stylesheet" href="icon/iconfont.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<style>
+    .box-lottery::-webkit-scrollbar {
+        display: none;
+    }
+</style>
+<body style="overflow: hidden">
+<div class="box-lottery" style="overflow: hidden">
+    <div class="lottery-wrap" style="transform: rotate(337.5deg);">
+        <span class="lottery-span1" data-id="8">
+            <i>谢谢惠顾</i>
+        </span>
+        <span class="lottery-span2" data-id="7">
+            <i>获取一元红包</i>
+        </span>
+        <span class="lottery-span3" data-id="6">
+            <i>你给我5元红包</i>
+        </span>
+        <span class="lottery-span4" data-id="5">
+            <i>你学一声猪叫</i>
+        </span>
+        <span class="lottery-span5" data-id="1">
+            <i>一起看电影</i>
+        </span>
+        <span class="lottery-span6" data-id="4">
+            <i>你请我吃饭</i>
+        </span>
+        <span class="lottery-span7" data-id="3">
+            <i>我请你吃饭</i>
+        </span>
+        <span class="lottery-span8" data-id="2">
+            <i>在一起</i>
+        </span>
+    </div>
+    <a class="lottery-btn" href="javascript:void(0);"><i></i>立即抽奖</a>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/lib/anime.min.js"></script>
+<script src="js/app/lottery.js"></script>
+<script src="js/modal.js"></script>
+<script>
+
+    var Lottery = Turntable.create();
+    /*var mModal2 = new mModal({
+        confirm: function () {
+            alert("确定弹框2");
+            mModal2.close();
+        },
+        cancel: function () {
+            window.location.href = "/aaa.html";
+            alert("取消弹框2")
+        }
+    });*/
+    $('.lottery-btn').on('click', function () {
+        $.ajax({
+            url: "/random/selectById",
+            success: function (data) {
+                Lottery.start(data, function (index) {
+                    if(data === 7){
+                        setTimeout("skip()", 10);
+                        // mModal2.renderDom();
+                    }
+                });
+            }
+        });
+
+    });
+
+    function skip() {
+        $.ajax({
+            url: 'heart.html',
+            success: function (res) {
+                document.write(res);
+            }
+        });
+    }
+</script>
+</body>
+
+</html>

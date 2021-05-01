@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoma.demo.mapper.RandomMapper">
+  <resultMap id="BaseResultMap" type="com.xiaoma.demo.domain.Random">
+    <!--@mbg.generated-->
+    <!--@Table random-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="rand_num" jdbcType="INTEGER" property="randNum" />
+    <result column="restrict" jdbcType="INTEGER" property="restrict" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, rand_num, `restrict`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from random
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+</mapper>
